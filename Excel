@@ -1,0 +1,33 @@
+Option Explicit 
+Dim objExcel, objWorkbook, objWorksheet, row, col, msg, ThisTxt, ThisLen, ctrCells, objFSO Dim ipFN 
+Const Threshhold = 1094 ‘ 🡨----- 
+If Wscript.Arguments.Count = 0 then  
+ wscript.echo "Please drag a file to the icon!" 
+ wscript.quit 
+end if 
+Set objFSO = CreateObject("Scripting.FileSystemObject") 
+IpFN = trim(wscript.arguments(0))  
+' Start the application 
+Set objExcel = CreateObject("Excel.Application") 
+objExcel.Application.visible = true ' make Excel visible 
+Set objWorkbook = objExcel.Workbooks.Open(IPFN) 
+Set objWorksheet = objWorkbook.Worksheets(1) '<---- Hardcode the worksheet number 
+msg = "This spreadsheet has " & objWorksheet.UsedRange.Rows.Count & " rows " & _  objWorksheet.UsedRange.Columns.Count & " columns." & vbcrlf 
+ctrCells = 0  
+For Row = 1 to objWorksheet.UsedRange.Rows.Count 
+ 'For col = 1 to objWorksheet.UsedRange.Columns.Count  
+ For col = 1 to 9  
+ ctrCells = ctrCells + 1 
+ ThisTxt = (objWorksheet.Cells(row,col).Value) 
+ ThisLen = len(ThisTxt) 
+ If ThisLen > Threshhold then 
+ msg = msg & "Row " & Row & " col " & Col & " is " & ThisLen & " bytes." & vbcrlf end if  
+ next 
+next 
+msg = msg & "I checked " & ctrCells & " cells." & vbcrlf 
+MsgBox(Msg) 
+' objExcel.Application.quit Leave the spreadsheet open 
+Set objWorksheet = nothing 
+Set objWorkbook = nothing 
+Set objExcel = nothing 
+Wscript.quit
