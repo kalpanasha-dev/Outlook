@@ -1,0 +1,31 @@
+' Process Outlook e-mail 
+Option Explicit 
+Dim OlApp, Inbox, InboxItems, Mailobject 
+Dim Msg, emSubject, emFrom, emTo, emBody, emDateSent, eCtr 
+Const olFolderInbox = 6 
+Set OlApp = CreateObject("Outlook.Application") 
+Set Inbox = OlApp.GetNamespace("Mapi").GetDefaultFolder(olFolderInbox) 
+Set InboxItems = Inbox.Items 
+Msg ="" : eCtr = 0 
+For Each Mailobject In InboxItems 
+ 'If Mailobject.UnRead Then 
+ eCtr = eCtr + 1 
+ emSubject = Mailobject.Subject 
+ emfrom = Mailobject.SenderName 
+ emTo = Mailobject.To 
+ emBody = Mailobject.Body 
+ emDateSent = Mailobject.SentOn 
+ 'Mailobject.UnRead = False 
+ Msg = Msg & "Subject= " & emSubject & ";" & vbcrlf 
+ Msg = Msg & " From=" & emFrom & ";" & vbcrlf 
+ Msg = Msg & " To= " & emTo & ";" & vbcrlf 
+ Msg = Msg & " Sent=" & emDateSent& ";" & vbcrlf 
+ Msg = Msg & " Body=" & emBody & ";" & vbcrlf  
+ Msg = Msg & "------------------------------------------------" & vbcrlf 
+Next 
+Msg = "I processed " & eCtr & " e-mail messages!" & vbcrlf & Msg 
+MsgBox Msg,,WScript.Scriptname 
+Set OlApp = Nothing 
+Set Inbox = Nothing 
+Set InboxItems = Nothing 
+Set Mailobject = Nothing
