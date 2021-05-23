@@ -1,0 +1,5 @@
+objWord (Set objWord = CreateObject("Word.Application")) 
+.Visible = True 
+objDoc (Set objDoc = objWord.Documents.Add()) 
+Tables.Add objRange, NUMBER_OF_ROWS, NUMBER_OF_COLUMNS objRange (Set objRange = objDoc.Range()) 
+objTable (Set objTable = objDoc.Tables(1) ' Work with the first (and only) table) 
