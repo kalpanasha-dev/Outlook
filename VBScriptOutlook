@@ -1,0 +1,8 @@
+Const olFolderCalender = 9 
+Set objOutlook = CreateObject("Outlook.application") Set objNameSpace = objOutlook.GetNameSpace("MAPI") Set objFolder = objNameSpace.GetDefaultFolder(olFolderCalender) Set MyItems = objFolder.Items 
+MyItems.Subject 
+MyItems.Start 
+MyItems.Duration 
+MyItems.GetRecurrencePattern 3 = weekly, 0 = daily MyItems.BusyStatus 
+MyItems.Sensitivity 
+MyItems.End
