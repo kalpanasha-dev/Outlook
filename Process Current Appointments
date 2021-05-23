@@ -1,0 +1,47 @@
+ Dim objOutlook 
+ Dim objNameSpace 
+ Dim objFolder 
+ Dim MyItems 
+ Dim CurrentAppointment 
+ Dim strOutput 
+ Const olMailItem = 0 
+ Const olTaskItem = 3 
+ Const olFolderTasks = 13 
+ Const olFolderCalender = 9 
+ 'Create Outlook, Namespace, Folder Objects and Task Item 
+ Set objOutlook = CreateObject("Outlook.application") 
+ Set objNameSpace = objOutlook.GetNameSpace("MAPI") 
+ Set objFolder = objNameSpace.GetDefaultFolder(olFolderCalender) 
+ Set MyItems = objFolder.Items 
+ dtLastWeek = DateAdd("d", -7, date) 
+ dtNextWeek = DateAdd("d", +7, date) 
+ strOutput = strOutput & "<h2> Meetings This Week </h2>" 
+ icount = 0 
+  
+ For Each CurrentAppointment in MyItems 
+ If currentAppointment.BusyStatus = 2 and currentAppointment.Sensitivity=0 then  If CurrentAppointment.Start >= dtLastWeek And CurrentAppointment.Start <= Date+1 Then  icount = icount + 1 
+ strOutput = strOutput & icount & ". " & CurrentAppointment.Subject & vbTab & _  " <b>Time:</b> " & CurrentAppointment.Start & _ 
+ " <b>Duration</b> " & CurrentAppointment.Duration& vbCRLF 
+ txtNames = txtNames & CurrentAppointment.Subject & vbTab & _ 
+ " <b>Time:</b> " & CurrentAppointment.Start & _ 
+ " <b>duration</b> " & CurrentAppointment.Duration& vbCRLF 
+ End If 
+ End If 
+ Next 
+ ' Create (but don't send) the e-mail 
+ Set objMsg = objOutlook.CreateItem(olMailItem) 
+ objMsg.To = "e-mail recipient address"  
+ objMsg.Subject = "Subject of message on " & Date() 
+ objMsg.Display 
+ strOutput = replace(strOutput,vbCrLF,"<br>") 
+ objMsg.HTMLBody = strOutput 
+ 'Display results to user, if any. 
+ 'If strOutput > "" Then 
+ ' Msgbox strOutput, vbExclamation, "Meetings for this week" 
+ 'Else
+ ' Msgbox "No Tasks Today", vbInformation,"No Meetings for this week"  'End If 
+ 'Clean up 
+ Set objFolder = Nothing 
+ Set objNameSpace = Nothing 
+ set objOutlook = Nothing 
+ set objMsg = Nothing 
